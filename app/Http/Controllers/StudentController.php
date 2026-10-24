@@ -2,47 +2,76 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class StudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // GET /api/students
     public function index()
     {
-        //
+        return response()->json([
+            'success' => true,
+            'data'    => Student::all(),
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // POST /api/students
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'fisrtname'   => 'sometimes|required|string|max:255',
+            'lastname'   => 'sometimes|required|string|max:255',
+            'course' => 'sometimes|required|string|max:255',
+            'year'    => 'sometimes|required|integer|min:1',
+        ]);
+
+        $student = Student::create($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Student created successfully',
+            'data'    => $student,
+        ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // GET /api/students/{student}
+    public function show(Student $student)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'data'    => $student,
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    // PUT/PATCH /api/students/{student}
+    public function update(Request $request, Student $student)
     {
-        //
+        $validated = $request->validate([
+            'fisrtname'   => 'sometimes|required|string|max:255',
+            'lastname'   => 'sometimes|required|string|max:255',
+            'course' => 'sometimes|required|string|max:255',
+            'year'    => 'sometimes|required|integer|min:1',
+        ]);
+
+        $student->update($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Student updated successfully',
+            'data'    => $student,
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    // DELETE /api/students/{student}
+    public function destroy(Student $student)
     {
-        //
+        $student->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Student deleted successfully',
+        ]);
     }
 }
