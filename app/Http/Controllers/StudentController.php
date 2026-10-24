@@ -19,22 +19,22 @@ class StudentController extends Controller
 
     // POST /api/students
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'fisrtname'   => 'sometimes|required|string|max:255',
-            'lastname'   => 'sometimes|required|string|max:255',
-            'course' => 'sometimes|required|string|max:255',
-            'year'    => 'sometimes|required|integer|min:1',
-        ]);
+{
+    $validated = $request->validate([
+        'firstname' => 'sometimes|required|string|max:255',
+        'lastname'  => 'sometimes|required|string|max:255',
+        'course'    => 'sometimes|required|string|max:255',
+        'year'      => 'sometimes|required|integer|min:1',
+    ]);
 
-        $student = Student::create($validated);
+    $student = Student::create($validated);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Student created successfully',
-            'data'    => $student,
-        ], 201);
-    }
+    return response()->json([
+        'success' => true,
+        'message' => 'Student created successfully',
+        'data'    => $student,
+    ], 201);
+}
 
     // GET /api/students/{student}
     public function show(Student $student)
